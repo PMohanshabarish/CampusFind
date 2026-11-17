@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!image) return "";
 
         const serverURL = API_BASE.replace(/\/api\/?$/, "");
+        if (/^https?:\/\//i.test(image)) return image;
         return serverURL + encodeURI(image);
     }
 

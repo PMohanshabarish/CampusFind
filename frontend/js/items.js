@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     ${item.image ? `
                         <img
                             class="item-photo"
-                            src="${API_BASE.replace(/\/api\/?$/, '')}${encodeURI(item.image)}"
+                            src="${/^https?:\/\//i.test(item.image) ? item.image : API_BASE.replace(/\/api\/?$/, '') + encodeURI(item.image)}"
                             alt="${escapeHtml(item.itemName)}"
                             title="Click to enlarge"
                             style="width:100%; height:200px; object-fit:cover; border-radius:12px; margin:12px 0; cursor:zoom-in;"
