@@ -6,8 +6,8 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-const Item = require("../models/Item");
-const authMiddleware = require("../middleware/authMiddleware");
+const Item = require("../models/item");
+const authMiddleware = require("../middleware/authmiddleware");
 const adminMiddleware = require("../middleware/adminMiddleware");
 
 // Create uploads folder if it does not exist

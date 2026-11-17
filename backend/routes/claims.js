@@ -2,10 +2,10 @@
 const express = require("express");
 const router = express.Router();
 
-const Claim = require("../models/Claim");
-const Item = require("../models/Item");
+const Claim = require("../models/claim");
+const Item = require("../models/item");
 
-const authMiddleware = require("../middleware/authMiddleware");
+const authMiddleware = require("../middleware/authmiddleware");
 const adminMiddleware = require("../middleware/adminMiddleware");
 
 // GET API - Retrieve all claims (Admin only)
