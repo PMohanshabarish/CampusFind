@@ -1,6 +1,6 @@
 
 // Backend URL
-const API_BASE = "http://192.168.1.103:5000/api";
+const API_BASE = "https://campusfind-api-auuh.onrender.com/api";
 
 // Get authentication token
 function getToken() {
