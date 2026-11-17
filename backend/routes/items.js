@@ -1,41 +1,23 @@
-
-const express = require("express");
+﻿const express = require("express");
 const router = express.Router();
 
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+const { v2: cloudinary } = require("cloudinary");
 
 const Item = require("../models/item");
 const authMiddleware = require("../middleware/authmiddleware");
 const adminMiddleware = require("../middleware/adminMiddleware");
 
-// Create uploads folder if it does not exist
-const uploadDir = path.join(__dirname, "../uploads");
-
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-// Multer storage configuration
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, uploadDir);
-    },
-
-    filename: (req, file, cb) => {
-        const uniqueName =
-            Date.now() + "-" +
-            Math.round(Math.random() * 1E9) +
-            path.extname(file.originalname).toLowerCase();
-
-        cb(null, uniqueName);
-    }
+// Cloudinary configuration
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// Accept image files only
+// Multer memory storage
 const upload = multer({
-    storage: storage,
+    storage: multer.memoryStorage(),
 
     limits: {
         fileSize: 5 * 1024 * 1024
@@ -49,6 +31,27 @@ const upload = multer({
         }
     }
 });
+
+// Upload image buffer to Cloudinary
+const uploadToCloudinary = (fileBuffer) => {
+    return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+            {
+                folder: "campusfind/items",
+                resource_type: "image"
+            },
+            (error, result) => {
+                if (error) {
+                    return reject(error);
+                }
+
+                resolve(result);
+            }
+        );
+
+        stream.end(fileBuffer);
+    });
+};
 
 // GET API - Retrieve all items
 router.get("/", async (req, res) => {
@@ -110,9 +113,18 @@ router.get("/search", async (req, res) => {
     }
 });
 
-// POST API - Add a new item with optional photo (Login Required)
+// POST API - Add item with optional Cloudinary photo
 router.post("/", authMiddleware, upload.single("photo"), async (req, res) => {
+    let uploadedImage = null;
+
     try {
+        let imageUrl = "";
+
+        if (req.file) {
+            uploadedImage = await uploadToCloudinary(req.file.buffer);
+            imageUrl = uploadedImage.secure_url;
+        }
+
         const newItem = new Item({
             itemName: req.body.itemName,
             category: req.body.category,
@@ -120,7 +132,7 @@ router.post("/", authMiddleware, upload.single("photo"), async (req, res) => {
             location: req.body.location,
             date: req.body.date,
             listingType: req.body.listingType,
-            image: req.file ? `/uploads/${req.file.filename}` : ""
+            image: imageUrl
         });
 
         const savedItem = await newItem.save();
@@ -131,6 +143,15 @@ router.post("/", authMiddleware, upload.single("photo"), async (req, res) => {
         });
 
     } catch (error) {
+        // Remove uploaded image if database saving fails
+        if (uploadedImage && uploadedImage.public_id) {
+            try {
+                await cloudinary.uploader.destroy(uploadedImage.public_id);
+            } catch (cleanupError) {
+                console.error("Cloudinary cleanup failed.");
+            }
+        }
+
         res.status(400).json({
             message: error.message
         });
@@ -192,7 +213,10 @@ router.patch("/:id", authMiddleware, adminMiddleware, async (req, res) => {
 
 // Handle photo upload errors
 router.use((error, req, res, next) => {
-    if (error instanceof multer.MulterError || error.message === "Only image files are allowed.") {
+    if (
+        error instanceof multer.MulterError ||
+        error.message === "Only image files are allowed."
+    ) {
         return res.status(400).json({
             message: error.message
         });
