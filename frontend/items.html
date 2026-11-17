@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Items | CampusFind</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+
+        <a class="brand" href="index.html">
+            Campus<span>Find</span>
+        </a>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a class="active" href="items.html">Browse Items</a>
+            <a href="report.html">Report Item</a>
+            <a href="dashboard.html">Dashboard</a>
+        </nav>
+
+        <div id="authLinks" class="nav-actions"></div>
+
+    </header>
+
+    <main class="page-wrap">
+
+        <div class="page-title">
+            <p class="eyebrow">CAMPUS LISTINGS</p>
+
+            <h1>Browse Lost & Found Items</h1>
+
+            <p class="muted">
+                Search the listings to find a matching item.
+            </p>
+        </div>
+
+        <form id="searchForm" class="filter-panel">
+
+            <input
+                type="text"
+                id="keyword"
+                placeholder="Search item name"
+            >
+
+            <select id="category">
+                <option value="">All Categories</option>
+                <option>Electronics</option>
+                <option>Accessories</option>
+                <option>Books</option>
+                <option>Clothing</option>
+                <option>Other</option>
+            </select>
+
+            <input
+                type="text"
+                id="location"
+                placeholder="Location"
+            >
+
+            <select id="listingType">
+                <option value="">Lost & Found</option>
+                <option value="Lost">Lost</option>
+                <option value="Found">Found</option>
+            </select>
+
+            <button class="btn" type="submit">Search</button>
+
+            <button
+                class="btn btn-outline"
+                type="button"
+                id="clearSearch"
+            >
+                Clear
+            </button>
+
+        </form>
+
+        <div id="message" class="message"></div>
+
+        <div id="itemsGrid" class="items-grid">
+            <p class="muted">Loading items...</p>
+        </div>
+        <!-- Image Popup -->
+<div id="imageModal" style="
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+">
+
+    <button id="closeImageModal" style="
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 35px;
+        cursor: pointer;
+    ">&times;</button>
+
+    <img id="modalImage" src="" alt="Enlarged item photo" style="
+        max-width: 90%;
+        max-height: 85vh;
+        object-fit: contain;
+        border-radius: 12px;
+    ">
+
+</div>
+
+    </main>
+
+    <script src="js/common.js"></script>
+    <script src="js/items.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+﻿node_modules/
+**/node_modules/
+
+.env
+.env.*
+!.env.example
+
+backend/uploads/
+postman-cli-reports/
+.DS_Store
+
+# Postman local configuration
+.postman/
+postman/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Dependencies and uploaded files
+**/node_modules/
+backend/uploads/
+
+# Test reports
+postman-cli-reports/

@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Item | CampusFind</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header class="site-header">
+    <a class="brand" href="index.html">Campus<span>Find</span></a>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="items.html">Browse Items</a>
+        <a class="active" href="report.html">Report Item</a>
+        <a href="dashboard.html">Dashboard</a>
+    </nav>
+
+    <div id="authLinks" class="nav-actions"></div>
+</header>
+
+<main class="auth-wrap">
+    <section class="auth-card wide">
+
+        <p class="eyebrow">HELP THE COMMUNITY</p>
+        <h1>Report an item</h1>
+        <p class="muted">Login is required to submit a listing.</p>
+
+        <form id="reportForm">
+
+            <label>
+                Item name
+                <input id="itemName" required placeholder="e.g. Black wallet">
+            </label>
+
+            <label>
+                Category
+                <select id="category" required>
+                    <option value="">Choose category</option>
+                    <option>Electronics</option>
+                    <option>Accessories</option>
+                    <option>Books</option>
+                    <option>Clothing</option>
+                    <option>Other</option>
+                </select>
+            </label>
+
+            <label>
+                Description
+                <textarea id="description" required rows="4"
+                    placeholder="Describe the item..."></textarea>
+            </label>
+
+            <label>
+                Location
+                <input id="location" required
+                    placeholder="Where was it lost or found?">
+            </label>
+
+            <label>
+                Date
+                <input id="date" type="date" required>
+            </label>
+
+            <label>
+                Listing type
+                <select id="listingType" required>
+                    <option value="">Choose type</option>
+                    <option value="Lost">Lost</option>
+                    <option value="Found">Found</option>
+                </select>
+            </label>
+
+            <!-- Photo Upload -->
+            <label>
+                Upload item photo
+                <input
+                    type="file"
+                    id="itemPhoto"
+                    name="photo"
+                    accept="image/*"
+                >
+            </label>
+
+            <!-- Image Preview -->
+            <div id="photoPreviewContainer" style="display: none; margin: 15px 0;">
+                <p class="muted">Photo preview:</p>
+                <img
+                    id="photoPreview"
+                    alt="Selected item photo preview"
+                    style="max-width: 100%; max-height: 250px; border-radius: 12px; object-fit: contain;"
+                >
+            </div>
+
+            <button class="btn full" type="submit">
+                Submit report
+            </button>
+
+        </form>
+
+        <div id="message" class="message"></div>
+
+    </section>
+</main>
+
+<script src="js/common.js"></script>
+<script src="js/items.js"></script>
+
+<script>
+    const itemPhoto = document.getElementById("itemPhoto");
+    const photoPreview = document.getElementById("photoPreview");
+    const previewContainer = document.getElementById("photoPreviewContainer");
+
+    let previewUrl = null;
+
+    itemPhoto.addEventListener("change", function () {
+
+        const file = this.files[0];
+
+        if (previewUrl) {
+            URL.revokeObjectURL(previewUrl);
+            previewUrl = null;
+        }
+
+        if (!file) {
+            previewContainer.style.display = "none";
+            photoPreview.removeAttribute("src");
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+            alert("Please select an image file.");
+            this.value = "";
+            previewContainer.style.display = "none";
+            return;
+        }
+
+        previewUrl = URL.createObjectURL(file);
+        photoPreview.src = previewUrl;
+        previewContainer.style.display = "block";
+    });
+</script>
+
+</body>
+</html>

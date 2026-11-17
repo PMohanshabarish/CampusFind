@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | CampusFind</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+
+        <a class="brand" href="index.html">
+            Campus<span>Find</span>
+        </a>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="items.html">Browse Items</a>
+        </nav>
+
+    </header>
+
+    <main class="auth-wrap">
+
+        <section class="auth-card">
+
+            <p class="eyebrow">WELCOME BACK</p>
+
+            <h1>Login to your account</h1>
+
+            <p class="muted">
+                Use your campus account to continue.
+            </p>
+
+            <form id="loginForm">
+
+                <label>
+                    Email Address
+
+                    <input
+                        type="email"
+                        id="email"
+                        required
+                        placeholder="you@example.com"
+                    >
+                </label>
+
+                <label>
+                    Password
+
+                    <input
+                        type="password"
+                        id="password"
+                        required
+                        placeholder="Enter your password"
+                    >
+                </label>
+
+                <button class="btn full" type="submit">
+                    Login
+                </button>
+
+            </form>
+
+            <div id="message" class="message"></div>
+
+            <p class="form-foot">
+                Don't have an account?
+                <a href="register.html">Register</a>
+            </p>
+
+        </section>
+
+    </main>
+
+    <script src="js/common.js"></script>
+    <script src="js/auth.js"></script>
+
+</body>
+</html>

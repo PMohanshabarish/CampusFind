@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | CampusFind</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+
+        <a class="brand" href="index.html">
+            Campus<span>Find</span>
+        </a>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="items.html">Browse Items</a>
+        </nav>
+
+    </header>
+
+    <main class="auth-wrap">
+
+        <section class="auth-card">
+
+            <p class="eyebrow">JOIN THE COMMUNITY</p>
+
+            <h1>Create an Account</h1>
+
+            <p class="muted">
+                Register to report items and submit claims.
+            </p>
+
+            <form id="registerForm">
+
+                <label>
+                    Full Name
+
+                    <input
+                        type="text"
+                        id="name"
+                        required
+                        placeholder="Your name"
+                    >
+                </label>
+
+                <label>
+                    Email Address
+
+                    <input
+                        type="email"
+                        id="email"
+                        required
+                        placeholder="you@example.com"
+                    >
+                </label>
+
+                <label>
+                    Password
+
+                    <input
+                        type="password"
+                        id="password"
+                        minlength="6"
+                        required
+                        placeholder="At least 6 characters"
+                    >
+                </label>
+
+                <button class="btn full" type="submit">
+                    Create Account
+                </button>
+
+            </form>
+
+            <div id="message" class="message"></div>
+
+            <p class="form-foot">
+                Already registered?
+                <a href="login.html">Login</a>
+            </p>
+
+        </section>
+
+    </main>
+
+    <script src="js/common.js"></script>
+    <script src="js/auth.js"></script>
+
+</body>
+</html>

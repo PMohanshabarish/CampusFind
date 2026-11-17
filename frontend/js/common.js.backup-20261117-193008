@@ -1,0 +1,83 @@
+
+// Backend URL
+const API_BASE = "http://localhost:5000/api";
+
+// Get authentication token
+function getToken() {
+    return localStorage.getItem("token");
+}
+
+// Get logged-in user
+function getUser() {
+    try {
+        return JSON.parse(localStorage.getItem("user") || "null");
+    } catch {
+        return null;
+    }
+}
+
+// Display messages
+function setMessage(element, message, isError = false) {
+    if (!element) return;
+
+    element.textContent = message;
+    element.className = isError ? "message error" : "message";
+}
+
+// Authentication headers
+function authHeaders() {
+    const token = getToken();
+
+    return token
+        ? { "Authorization": `Bearer ${token}` }
+        : {};
+}
+
+// Update navbar
+function updateAuthLinks() {
+    const area = document.getElementById("authLinks");
+
+    if (!area) return;
+
+    const user = getUser();
+
+    if (user) {
+        const adminButton = user.role === "Admin"
+            ? `<a class="btn admin-btn" href="admin.html">Admin</a>`
+            : "";
+
+        area.innerHTML = `
+            <span class="muted">Hi, ${escapeHtml(user.name || "User")}</span>
+            ${adminButton}
+            <button class="btn btn-outline" id="logoutBtn" type="button">
+                Logout
+            </button>
+        `;
+
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            window.location.href = "index.html";
+        });
+
+    } else {
+        area.innerHTML = `
+            <a class="btn btn-outline" href="login.html">Login</a>
+            <a class="btn" href="register.html">Sign Up</a>
+        `;
+    }
+}
+
+// Escape HTML
+function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, ch => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    }[ch]));
+}
+
+// Run when page loads
+document.addEventListener("DOMContentLoaded", updateAuthLinks);
